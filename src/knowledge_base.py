@@ -3,22 +3,21 @@ import json
 
 def load_quran(path="data/quran.csv"):
     df = pd.read_csv(path)
-    df["source"] = df.apply(
-        lambda x: f"Quran {x['surah']}:{x['ayah']}", axis=1
-    )
+    # Full text includes reference
+    df["text"] = df.apply(lambda x: f"Quran {x['surah']}:{x['ayah']}: {x['text']}", axis=1)
+    df["source"] = df.apply(lambda x: f"Quran {x['surah']}:{x['ayah']}", axis=1)
     return df[["text", "source"]]
 
 def load_hadith(path="data/hadith.csv"):
     df = pd.read_csv(path)
-    df["source"] = df.apply(
-        lambda x: f"{x['source']} {x['reference']}", axis=1
-    )
+    # Full text includes reference
+    df["text"] = df.apply(lambda x: f"{x['source']} {x['reference']}: {x['text']}", axis=1)
+    df["source"] = df.apply(lambda x: f"{x['source']} {x['reference']}", axis=1)
     return df[["text", "source"]]
 
 def load_herbs(path="data/herbs.json"):
     with open(path, "r") as f:
         data = json.load(f)
-
     texts = []
     for item in data:
         texts.append({
