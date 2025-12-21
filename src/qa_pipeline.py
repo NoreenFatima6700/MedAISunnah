@@ -28,7 +28,11 @@ class MedAISunnahQA:
 
         prompt = f"""
 Answer the question using ONLY the context below.
-Cite sources clearly.
+
+For each relevant source:
+1. First QUOTE the exact text as it appears.
+2. Then briefly explain it in your own words.
+3. Mention the source explicitly.
 
 Context:
 {context}
@@ -38,6 +42,7 @@ Question:
 
 Answer:
 """
+
 
         response = self.llm(prompt)[0]["generated_text"].strip()
 
