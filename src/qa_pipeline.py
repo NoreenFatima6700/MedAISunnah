@@ -26,11 +26,12 @@ class MedAISunnahQA:
             citations.append(r["source"])
 
         prompt = f"""
-Using ONLY the text below, answer the question.
+Answer the question using ONLY the context below.
 
-Include:
-- The exact quoted text
-- The source after each quote
+For each relevant source:
+- Quote the exact text from the source.
+- Briefly explain it in your own words.
+- Mention the source after the quote.
 
 Context:
 {context}
