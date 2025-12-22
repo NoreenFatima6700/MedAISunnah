@@ -4,14 +4,11 @@ from src.knowledge_base import load_knowledge_base
 
 class MedAISunnahQA:
     def __init__(self):
-        # Load documents
         docs = load_knowledge_base()
 
-        # Build vector store
         self.vector_store = VectorStore()
         self.vector_store.build(docs)
 
-        # Correct pipeline for FLAN-T5
         self.llm = pipeline(
             "text2text-generation",
             model="google/flan-t5-base",
