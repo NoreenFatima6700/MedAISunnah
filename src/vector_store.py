@@ -23,16 +23,21 @@ class VectorStore:
         self.index.add(self.embeddings)
         print(f"Vector store built with {len(texts)} documents.")
 
-    def search(self, query: str, top_k=5):
-        """
-        Return top_k most similar documents as list of dicts with 'text' and 'source'.
-        """
-        query_vec = self.model.encode([query], convert_to_numpy=True)
-        D, I = self.index.search(query_vec, top_k)
-        results = []
-        for i in I[0]:
-            results.append({
-                "text": self.kb.iloc[i]["text"],
-                "source": self.kb.iloc[i]["source"]
-            })
-        return results
+    def search(self, query: str):
+    """
+    Return ONLY the most relevant document.
+    """
+    # Convert question into vector
+    query_vec = self.model.encode([query], convert_to_numpy=True)
+
+    # Ask FAISS for the single best match
+    D, I = self.index.search(query_vec, 1)
+
+    # Get index of best document
+    best_index = I[0][0]
+
+    # Return only one result
+    return [{
+        "text": self.kb.iloc[best_index]["text"],
+        "source": self.kb.iloc[best_index]["source"]
+    }]
